@@ -1,0 +1,41 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDEs and Workspace config
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Java Build artifacts (Maven local build target)
+target/
+*.class
+*.jar
+*.war
+
+# Documentation files
+docs/
+*.md
+
+# Logs
+*.log
+logs/
+
+# Infrastructure config files (except Dockerfile needed for application build)
+infrastructure/*
+!infrastructure/Dockerfile
+
+# Environment variables files
+.env
+.env.docker
+.env.local
+infrastructure/.env
+infrastructure/.env.docker
+
+# Temporary files
+*.tmp
+tmp/

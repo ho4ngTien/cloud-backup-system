@@ -1,0 +1,91 @@
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:postgresql://${SPRING_DATASOURCE_HOST:postgres}:${SPRING_DATASOURCE_PORT:5432}/${SPRING_DATASOURCE_DB:cloudbackup}
+    username: ${SPRING_DATASOURCE_USERNAME:cloudbackup}
+    password: ${SPRING_DATASOURCE_PASSWORD:cloudbackup123}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 20
+          fetch_size: 50
+        order_inserts: true
+        order_updates: true
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:ReplaceWithSecureSecretKeyInProduction}
+    issuer: cloud-backup
+    expiration-minutes: 480
+  storage:
+    provider: ${STORAGE_PROVIDER:gcp}
+    gcp:
+      bucket-name: ${GCS_BUCKET_NAME:}
+      project-id: ${GCS_PROJECT_ID:}
+    aws:
+      bucket-name: ${AWS_S3_BUCKET:}
+      region: ${AWS_REGION:us-east-1}
+  email:
+    from: ${EMAIL_FROM:noreply@cloudbackup.com}
+  encryption:
+    key: ${ENCRYPTION_KEY:}
+
+logging:
+  level:
+    root: WARN
+    com.cloudbackup: INFO
+    org.springframework: WARN
+    org.hibernate: WARN
+  pattern:
+    console: "%d{ISO8601} %-5level %logger{36} - %msg%n"
+    file: "%d{ISO8601} %-5level %logger{36} - %msg%n"

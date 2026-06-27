@@ -1,0 +1,51 @@
+spring:
+  profiles:
+    active: dev
+
+---
+ spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cloudbackup
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your-email@gmail.com
+    password: your-email-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  jwt:
+    secret: ReplaceWithSecureSecretKey
+    issuer: cloud-backup
+    expiration-minutes: 480
+  storage:
+    provider: gcp
+    gcp:
+      bucket-name: your-gcp-bucket
+    aws:
+      bucket-name: your-s3-bucket
+      region: us-east-1
+  email:
+    from: noreply@cloudbackup.com
+
+logging:
+  level:
+    root: INFO
+    com.cloudbackup: DEBUG
