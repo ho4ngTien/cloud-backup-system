@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>CloudSafe – Cảnh báo dung lượng</title>
+    <style>
+        body { font-family:'Segoe UI',Tahoma,sans-serif; background:#f5f7fa; margin:0; padding:0; }
+        .container { max-width:580px; margin:40px auto; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+        .header { background:linear-gradient(135deg,#f9ab00,#e37400); padding:36px 40px; text-align:center; }
+        .header h1 { color:#fff; margin:0; font-size:22px; }
+        .header p  { color:rgba(255,255,255,0.85); margin:8px 0 0; font-size:14px; }
+        .body { padding:32px 40px; }
+        .progress-bar { background:#e8eaed; border-radius:999px; height:16px; overflow:hidden; margin:16px 0; }
+        .progress-fill { background:linear-gradient(90deg,#f9ab00,#ea4335); height:100%; border-radius:999px; transition:width 0.3s; }
+        .info-box { background:#fef7e0; border-left:4px solid #f9ab00; border-radius:8px; padding:16px 20px; font-size:14px; color:#594300; margin:16px 0; }
+        .footer { background:#f8f9fa; padding:20px 40px; text-align:center; font-size:12px; color:#9aa0a6; border-top:1px solid #e8eaed; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>☁️ CloudSafe</h1>
+        <p>Cloud Backup &amp; Disaster Recovery</p>
+    </div>
+    <div class="body">
+        <p>Xin chào <strong th:text="${displayName}">User</strong>,</p>
+        <p style="color:#5f6368; font-size:14px; line-height:1.6;">
+            Dung lượng lưu trữ của bạn sắp đầy. Hãy xem xét xóa các bản backup cũ hoặc nâng cấp dung lượng.
+        </p>
+        <div class="info-box">
+            ⚠️ Đã sử dụng <strong th:text="${usedPercent} + '%'">85%</strong> dung lượng
+            (<span th:text="${usedGb}">8.5</span> GB / <span th:text="${quotaGb}">10</span> GB)
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" th:style="'width:' + ${usedPercent} + '%'"></div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2024 CloudSafe. Email tự động – vui lòng không reply.</p>
+    </div>
+</div>
+</body>
+</html>

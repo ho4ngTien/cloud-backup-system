@@ -3,49 +3,124 @@ spring:
     active: dev
 
 ---
- spring:
+spring:
   config:
     activate:
       on-profile: dev
+
+  # ===== Database =====
   datasource:
     url: jdbc:postgresql://localhost:5432/cloudbackup
     username: postgres
     password: postgres
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  # ===== JPA / Hibernate =====
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          time_zone: UTC
+
+  # ===== Email (SMTP) =====
   mail:
     host: smtp.gmail.com
     port: 587
-    username: your-email@gmail.com
-    password: your-email-password
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+          connectiontimeout: 5000
+          timeout: 5000
 
+  # ===== Thymeleaf =====
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+
+# ===== Application Config =====
 app:
   jwt:
-    secret: ReplaceWithSecureSecretKey
+    secret: ${JWT_SECRET:CloudSafeSecretKeyMustBe256BitsOrLongerForHS256Algorithm2024}
     issuer: cloud-backup
-    expiration-minutes: 480
+    expiration-minutes: 480   # 8 hours
+
   storage:
-    provider: gcp
+    provider: gcp             # gcp | aws
     gcp:
-      bucket-name: your-gcp-bucket
-    aws:
-      bucket-name: your-s3-bucket
-      region: us-east-1
+      bucket-name: ${GCP_BUCKET_NAME:cloudsafe-backup}
+      credentials-path: ${GCP_CREDENTIALS_PATH:}  # leave blank to use ADC on GCE
+
   email:
     from: noreply@cloudbackup.com
 
+# ===== Actuator =====
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# ===== Logging =====
 logging:
   level:
     root: INFO
-    com.cloudbackup: DEBUG
+    com.cloudsafe: DEBUG
+    org.hibernate.SQL: WARN
+
+# ===== SpringDoc / Swagger =====
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:cloudbackup}
+    username: ${DB_USER:cloudbackup}
+    password: ${DB_PASSWORD:cloudbackup123}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-minutes: ${JWT_EXPIRY_MINUTES:480}
+  storage:
+    provider: ${STORAGE_PROVIDER:gcp}
+    gcp:
+      bucket-name: ${GCP_BUCKET_NAME}
+      credentials-path: ${GCP_CREDENTIALS_PATH:}
