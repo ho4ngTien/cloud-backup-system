@@ -12,9 +12,12 @@
     <description>Cloud Backup &amp; Disaster Recovery System – Spring Boot Backend</description>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>21</java.version>
         <spring.boot.version>3.4.3</spring.boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
     </properties>
 
     <dependencyManagement>
