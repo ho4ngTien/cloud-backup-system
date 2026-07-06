@@ -30,6 +30,14 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- ===== Compile-time helpers ===== -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.38</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- ===== Spring Boot Starters ===== -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -127,6 +135,13 @@
                 <configuration>
                     <release>${java.version}</release>
                     <encoding>UTF-8</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.38</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
