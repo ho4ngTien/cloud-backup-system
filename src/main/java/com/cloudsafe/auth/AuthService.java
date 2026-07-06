@@ -1,10 +1,10 @@
 package com.cloudsafe.auth;
 
 import com.cloudsafe.auth.dto.*;
-import com.cloudsafe.exception.AuthException;
-import com.cloudsafe.model.*;
-import com.cloudsafe.repository.*;
-import com.cloudsafe.security.JwtTokenProvider;
+import com.cloudsafe.common.exception.AuthException;
+import com.cloudsafe.domain.entity.model.*;
+import com.cloudsafe.domain.repository.repository.*;
+import com.cloudsafe.infrastructure.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
