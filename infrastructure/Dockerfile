@@ -5,22 +5,21 @@
 # =============================================================
 
 # -------- Stage 1: Build --------
-FROM eclipse-temurin:21-jdk-alpine AS builder
+FROM maven:3.9.16-eclipse-temurin-25 AS builder
 
 WORKDIR /build
 
 # Cache Maven dependencies first
 COPY pom.xml .
-COPY .mvn .mvn 2>/dev/null || true
 RUN --mount=type=cache,target=/root/.m2 \
-    mvn -B dependency:go-offline -f pom.xml 2>/dev/null || true
+    mvn -B dependency:go-offline -f pom.xml || true
 
 # Copy source and build
 COPY src ./src
 RUN mvn -B package -DskipTests -f pom.xml
 
 # -------- Stage 2: Runtime --------
-FROM eclipse-temurin:21-jre-alpine AS runtime
+FROM eclipse-temurin:25-jre-alpine AS runtime
 
 LABEL maintainer="CloudSafe Team <support@cloudsafe.io>"
 LABEL version="1.0.0"
