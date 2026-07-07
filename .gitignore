@@ -1,0 +1,32 @@
+bin/
+obj/
+.vscode/
+*.user
+*.suo
+*.db
+*.sqlite
+node_modules/
+dist/
+.env
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+
+# Java & Maven
+target/
+*.class
+*.jar
+*.war
+*.zip
+*.tar.gz
+*.log
+logs/
+.idea/
+
+# Longtq2501 Skills
+skills/
+AGENT.md
+
+.agents/
